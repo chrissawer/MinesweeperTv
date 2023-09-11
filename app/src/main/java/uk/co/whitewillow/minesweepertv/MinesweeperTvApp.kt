@@ -12,7 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,12 +26,13 @@ private val medium = MineFieldConfig(16, 16, 40)
 private var mineField by mutableStateOf(MineField.create(easy))
 private var flagMarkMode by mutableStateOf(false)
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun MinesweeperTvApp() {
+fun MinesweeperTvApp(modifier: Modifier = Modifier.semantics { testTagsAsResourceId = true }) {
     Column {
-        CurrentGameState()
-        SecondsCount()
-        FlagRemainingCount()
+        CurrentGameState(modifier)
+        SecondsCount(modifier)
+        FlagRemainingCount(modifier)
         Switch(checked = flagMarkMode, onCheckedChange = { markMode_ -> flagMarkMode = markMode_ })
         for (mineRow in mineField.gridMines) {
             Row {
@@ -68,19 +73,24 @@ fun MineCell(mineSquare: MineSquare, minesweeperTvViewModel: MinesweeperTvViewMo
 }
 
 @Composable
-fun FlagRemainingCount() {
-    Text(text = mineField.flagRemainingCount().toString())
+fun FlagRemainingCount(modifier: Modifier = Modifier) {
+    Text(text = mineField.flagRemainingCount().toString(),
+        modifier = modifier.semantics { testTag = "flagRemainingCount" })
 }
 
 @Composable
-fun SecondsCount(minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
-    Text(text = minesweeperTvViewModel.seconds.value.toString())
+fun SecondsCount(modifier: Modifier = Modifier,
+                 minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
+    Text(text = minesweeperTvViewModel.seconds.value.toString(),
+        modifier = modifier.semantics { testTag = "secondsCount" })
 }
 
 @Composable
-fun CurrentGameState(minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
+fun CurrentGameState(modifier: Modifier = Modifier,
+                     minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
     Text(text = mineField.gameState.toString(),
-        modifier = Modifier.clickable {
+        modifier = modifier.semantics { testTag = "currentGameState" }
+            .clickable {
             minesweeperTvViewModel.resetTime()
             mineField = MineField.create(easy)
         })
