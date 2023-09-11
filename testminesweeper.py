@@ -24,8 +24,11 @@ class TestMars(unittest.TestCase):
             self.driver.quit()
 
     def testGamesStateIsStopped(self) -> None:
-        el = self.driver.find_element(AppiumBy.XPATH, '//*[@resource-id="currentGameState"]')
-        self.assertEqual("STOPPED", el.text)
+        currentGameStateElement = self.driver.find_element(AppiumBy.XPATH, '//*[@resource-id="currentGameState"]')
+        self.assertEqual("STOPPED", currentGameStateElement.text)
+
+        self.driver.press_keycode(AndroidKey.DPAD_DOWN)
+        self.assertEqual(currentGameStateElement, self.driver.find_element(AppiumBy.XPATH, '//*[@focused="true"]'))
 
 if __name__ == '__main__':
     unittest.main()
