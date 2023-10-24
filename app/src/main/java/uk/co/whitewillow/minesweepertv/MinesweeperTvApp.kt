@@ -6,8 +6,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
+import androidx.tv.material3.Switch
+import androidx.tv.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -20,13 +20,14 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.tv.material3.ExperimentalTvMaterial3Api
 
 private val easy = MineFieldConfig(8, 8, 8)
 private val medium = MineFieldConfig(16, 16, 40)
 private var mineField by mutableStateOf(MineField.create(easy))
 private var flagMarkMode by mutableStateOf(false)
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalTvMaterial3Api::class)
 @Composable
 fun MinesweeperTvApp(modifier: Modifier = Modifier.semantics { testTagsAsResourceId = true }) {
     Column {
@@ -44,6 +45,7 @@ fun MinesweeperTvApp(modifier: Modifier = Modifier.semantics { testTagsAsResourc
     }
 }
 
+@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun MineCell(mineSquare: MineSquare, minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
     Text(text = mineSquare.toString(),
@@ -72,12 +74,14 @@ fun MineCell(mineSquare: MineSquare, minesweeperTvViewModel: MinesweeperTvViewMo
     )
 }
 
+@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun FlagRemainingCount(modifier: Modifier = Modifier) {
     Text(text = mineField.flagRemainingCount().toString(),
         modifier = modifier.semantics { testTag = "flagRemainingCount" })
 }
 
+@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun SecondsCount(modifier: Modifier = Modifier,
                  minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
@@ -85,6 +89,7 @@ fun SecondsCount(modifier: Modifier = Modifier,
         modifier = modifier.semantics { testTag = "secondsCount" })
 }
 
+@OptIn(ExperimentalTvMaterial3Api::class)
 @Composable
 fun CurrentGameState(modifier: Modifier = Modifier,
                      minesweeperTvViewModel: MinesweeperTvViewModel = viewModel()) {
